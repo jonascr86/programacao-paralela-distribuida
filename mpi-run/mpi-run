@@ -1,0 +1,41 @@
+Executando com MPI
+
+$ cat maquinas
+10.3.1.12
+10.3.1.14
+10.3.1.15
+
+# executa o programa conforme o numero de cores disponiveis em cada nodo
+# distribuido por slot
+$ mpirun -np 6 -hostfile maquinas hostname
+lab1-12-lin
+lab1-12-lin
+lab1-12-lin
+lab1-12-lin
+lab1-14-lin
+lab1-14-lin
+
+# executa o programa conforme o numero de cores disponiveis em cada nodo
+# distribuido por node
+$ mpirun -np 6 -hostfile maquinas --map-by node hostname
+lab1-12-lin
+lab1-14-lin
+lab1-15-lin
+lab1-12-lin
+lab1-14-lin
+lab1-15-lin
+
+
+#definindo o numero de slots em cada node
+$ cat maquinas
+10.3.1.12 slots=2
+10.3.1.14
+10.3.1.15
+
+$ mpirun -np 4 -hostfile maquinas hostname
+lab1-12-lin
+lab1-12-lin
+lab1-14-lin
+lab1-14-lin
+lab1-14-lin
+lab1-14-lin

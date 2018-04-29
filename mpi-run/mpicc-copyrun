@@ -1,0 +1,29 @@
+#!/bin/sh
+
+ARQUIVO=$1
+NROPROCESSOS=$2
+ARQUIVOFONTE=$ARQUIVO.c
+IPLOCAL=`hostname -I`
+
+EXEC="mpicc $ARQUIVOFONTE -o $ARQUIVO"
+echo ">>>> $EXEC"
+$EXEC
+
+for i in `cut -f1 -d' ' -s maquinas`; do
+	if [ $i != $IPLOCAL ] 
+	then
+		EXEC="scp $ARQUIVO $i:`pwd`"
+		echo ">>>> $EXEC"
+		$EXEC
+	fi
+done;
+
+
+EXEC="mpirun -np $NROPROCESSOS --hostfile maquinas --map-by node $ARQUIVO "
+echo ">>>> $EXEC"
+echo ""
+$EXEC
+
+
+
+
